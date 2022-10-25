@@ -1,2 +1,2 @@
 export * from "./components";
-// export * from "./widget";
+export * from "./widget";

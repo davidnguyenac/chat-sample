@@ -1,47 +1,42 @@
-import { FC, useState } from "react";
+import { FC, useCallback, useState } from "react";
 
 import TuneIcon from "@mui/icons-material/Tune";
 import Box from "@mui/material/Box";
-import Fab from "@mui/material/Fab";
-import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
-import TextareaAutosize from "@mui/material/TextareaAutosize";
-import TextField from "@mui/material/TextField";
-import InputAdornment from "@mui/material/InputAdornment";
-import Input from "@mui/material/Input";
-import Divider from "@mui/material/Divider";
-import Switch from "@mui/material/Switch";
-
-import { styled } from "@mui/material";
+import Fab from "@mui/material/Fab";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
 
 // icons
 import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
-import EmailIcon from "@mui/icons-material/Email";
-import TelegramIcon from "@mui/icons-material/Telegram";
-import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 
 import { IntercomChatSupportProvider } from "../../context";
 import { ChatSupportIcon } from "../icon";
+import Form from "./components/Form";
 
 export interface SampleComponentProps {
   label?: string;
 }
 
-const CustomInput = styled("input")(({ theme }) => ({
-  width: "auto",
-  height: "100%",
-  flex: 1,
-  border: "none",
-  outline: "none",
-  backgroundColor: "transparent",
-}));
-
 export const SampleComponent: FC<SampleComponentProps> = ({ label }) => {
   const [isAuth, setIsAuth] = useState(false);
+  const [showChat, setShowChat] = useState(false);
 
-  const handleAuth = () => {
-    setIsAuth(true);
+  const toggleSettingHandler = useCallback(() => {
+    setShowChat(false);
+  }, []);
+
+  const startChatHandler = () => {
+    // todo add validate user info
+    const validate = true;
+
+    //* if pass, goto chatting
+    if (validate) {
+      setShowChat(true);
+      return;
+    }
+
+    //* if not, stay at current screen
   };
 
   return (
@@ -57,7 +52,7 @@ export const SampleComponent: FC<SampleComponentProps> = ({ label }) => {
         <Box
           sx={{
             width: "364px",
-            minHeight: "517px",
+            height: "auto",
             border: "1px solid #E8EBF5",
             borderRadius: "4px",
             boxShadow: "0px 4px 30px rgba(0, 0, 0, 0.04)",
@@ -67,13 +62,13 @@ export const SampleComponent: FC<SampleComponentProps> = ({ label }) => {
           }}
         >
           {/* Auth */}
-          {isAuth ? (
+          {showChat ? (
             <Box
               sx={{
                 width: "100%",
                 height: "100%",
                 display: "grid",
-                gridTemplateRows: "50px auto 109px 68px",
+                gridTemplateRows: "50px 290px 109px 68px",
               }}
             >
               <Box
@@ -104,6 +99,7 @@ export const SampleComponent: FC<SampleComponentProps> = ({ label }) => {
                     display: "flex",
                     placeItems: "center",
                   }}
+                  onClick={toggleSettingHandler}
                 >
                   <TuneIcon sx={{ color: "#80829D", cursor: "pointer" }} />
                 </IconButton>
@@ -136,7 +132,7 @@ export const SampleComponent: FC<SampleComponentProps> = ({ label }) => {
           ) : (
             <Box
               sx={{
-                height: "100%",
+                height: "517px",
                 padding: "40px 24px 24px",
                 textAlign: "center",
               }}
@@ -163,84 +159,7 @@ export const SampleComponent: FC<SampleComponentProps> = ({ label }) => {
                 Start chatting with our team to get support. We’re here for you
                 24/7!
               </Typography>
-              <Box sx={{ marginTop: "24px", marginBottom: "35px" }}>
-                <Typography
-                  sx={{
-                    fontSizse: "1rem",
-                    fontWeight: 800,
-                    lineHeight: "20px",
-                  }}
-                >
-                  Get notifications for your support request
-                </Typography>
-                <Box sx={{ marginTop: "20px", width: "100%" }}>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      padding: "12px",
-                      color: "#80829D",
-                      bgcolor: "#F5F6FB",
-                      borderRadius: "6px",
-                    }}
-                  >
-                    <EmailIcon sx={{ color: "#B6B8D5" }} />
-                    <CustomInput
-                      placeholder="Email address"
-                      sx={{ marginLeft: "14px" }}
-                    />
-                  </Box>
-                </Box>
-                <Divider sx={{ margin: "8px 0" }}>OR</Divider>
-                <Box sx={{ width: "100%" }}>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      padding: "12px",
-                      color: "#80829D",
-                      bgcolor: "#F5F6FB",
-                      borderRadius: "6px",
-                    }}
-                  >
-                    <PhoneIphoneIcon sx={{ color: "#B6B8D5" }} />
-                    <CustomInput
-                      placeholder="xxx-xxx-xxxx"
-                      sx={{ marginLeft: "14px" }}
-                    />
-                  </Box>
-                </Box>
-                <Divider sx={{ margin: "8px 0" }}>OR</Divider>
-                <Box sx={{ width: "100%" }}>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      padding: "12px",
-                      color: "#80829D",
-                      bgcolor: "#F5F6FB",
-                      borderRadius: "6px",
-                    }}
-                  >
-                    <TelegramIcon sx={{ color: "#B6B8D5" }} />
-                    <CustomInput
-                      placeholder="Telegram ID"
-                      sx={{ marginLeft: "14px" }}
-                    />
-                  </Box>
-                </Box>
-                <Divider sx={{ margin: "8px 0" }}>OR</Divider>
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Typography>Opt in to browser alerts</Typography>
-                  <Switch inputProps={{ "aria-label": "optin" }} />
-                </Box>
-              </Box>
+              <Form />
               <Box sx={{ width: "100%" }}>
                 <Button
                   variant="contained"
@@ -251,7 +170,7 @@ export const SampleComponent: FC<SampleComponentProps> = ({ label }) => {
                     textTransform: "capitalize",
                     height: "50px",
                   }}
-                  onClick={handleAuth}
+                  onClick={startChatHandler}
                 >
                   Start Chatting
                 </Button>

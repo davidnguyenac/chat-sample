@@ -5,4 +5,6 @@ interface SampleComponentProps {
 }
 declare const SampleComponent: FC<SampleComponentProps>;
 
-export { SampleComponent, SampleComponentProps };
+declare const ChatSupport: FC;
+
+export { ChatSupport, SampleComponent, SampleComponentProps };

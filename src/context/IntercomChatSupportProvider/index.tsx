@@ -7,7 +7,11 @@ import {
 } from "react";
 
 import { chatSupportReducer } from "./reducers";
-import { ChatSupportContextValue, ChatSupportStates } from "./types";
+import {
+  ChatPopupStep,
+  ChatSupportContextValue,
+  ChatSupportStates,
+} from "./types";
 
 const ChatSupportContext = createContext(
   undefined as unknown as ChatSupportContextValue
@@ -15,12 +19,14 @@ const ChatSupportContext = createContext(
 
 const initialValue: ChatSupportStates = {
   isOpen: false,
+  step: ChatPopupStep.Greeting,
 };
 
 export const IntercomChatSupportProvider: FC<PropsWithChildren<any>> = ({
   children,
 }) => {
   const [states, dispatch] = useReducer(chatSupportReducer, initialValue);
+  console.log("🚀 ~ file: index.tsx ~ line 29 ~ states", states);
 
   return (
     <ChatSupportContext.Provider
